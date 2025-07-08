@@ -1,0 +1,25 @@
+{
+  "name": "webshot",
+  "version": "1.0.0",
+  "description": "CLI tool to screenshot websites with custom size and delay",
+  "main": "bin/webshot.js",
+  "bin": {
+    "webshot": "./bin/webshot.js"
+  },
+  "keywords": [
+    "cli",
+    "screenshot",
+    "puppeteer"
+  ],
+  "author": "Hongwei Tang",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^14.0.0",
+    "puppeteer": "^24.12.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "puppeteer"
+    ]
+  }
+}
