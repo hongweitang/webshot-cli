@@ -17,7 +17,7 @@ _This option is not available yet but I have to first figure out if there are an
 In the meantime, clone and run locally:
 
 ```bash
-git clone https://github.com/yourusername/webshot-cli
+git clone https://github.com/hongweitang/webshot-cli.git
 cd webshot-cli
 npm install
 chmod +x webshot.js
