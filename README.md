@@ -57,7 +57,7 @@ pnpm link -g
 | --------------- | ---------------------------- | ----------------- |
 | `-w, --width`   | Viewport width in pixels     | From ratio preset |
 | `-h, --height`  | Viewport height in pixels    | From ratio preset |
-| `-r, --ratio`   | Aspect ratio preset          | `16:9`            |
+| `-r, --ratio`   | Aspect ratio preset          | `16:10`           |
 | `-d, --delay`   | Delay before screenshot (ms) | `3000`            |
 | `-o, --output`  | Output filename              | Auto-generated    |
 | `-f, --format`  | Image format (png, jpeg)     | `png`             |

@@ -16,7 +16,7 @@ if (!fs.existsSync(outputDir)) {
 }
 
 const aspectRatios = {
-  '16:10': { width: 1920, height: 1200 },
+  '16:10': { width: 1920, height: 1200 }, // default
   '16:9': { width: 1920, height: 1080 },
   '4:3': { width: 1440, height: 1080 },
   '1:1': { width: 1080, height: 1080 },
@@ -50,17 +50,20 @@ function normalizeUrl(url) {
 /**
  * Get a safe filename from URL
  * @param {string} url - Website URL
+ * @param {number} scale - Scale factor for retina
  * @returns {string} Safe filename
  */
-function getSafeFilename(url) {
+function getSafeFilename(url, scale = 1) {
   try {
     const urlObj = new URL(url);
     const domain = urlObj.hostname.replace(/^www\./, '');
     const timestamp = getTimestamp();
-    return `${domain}_${timestamp}.png`;
+    const scaleStr = scale > 1 ? `_${scale}x` : '';
+    return `${domain}_${timestamp}${scaleStr}.png`;
   } catch (error) {
     const timestamp = getTimestamp();
-    return `screenshot_${timestamp}.png`;
+    const scaleStr = scale > 1 ? `_${scale}x` : '';
+    return `screenshot_${timestamp}${scaleStr}.png`;
   }
 }
 
@@ -68,7 +71,7 @@ function getSafeFilename(url) {
  * Take a screenshot of a website
  * @param {Object} options - Screenshot options
  */
-async function screenshotWebsite({ url, width, height, delay, output, headless, quality, format }) {
+async function screenshotWebsite({ url, width, height, delay, output, headless, quality, format, scale }) {
   const browser = await puppeteer.launch({
     headless,
     args: ['--no-sandbox', '--disable-setuid-sandbox'], // Better compatibility
@@ -77,11 +80,11 @@ async function screenshotWebsite({ url, width, height, delay, output, headless, 
   try {
     const page = await browser.newPage();
 
-    // Set viewport
+    // Set viewport with retina scaling
     await page.setViewport({
       width: parseInt(width),
       height: parseInt(height),
-      deviceScaleFactor: 1,
+      deviceScaleFactor: scale,
     });
 
     // Set user agent for better compatibility
@@ -90,7 +93,7 @@ async function screenshotWebsite({ url, width, height, delay, output, headless, 
     );
 
     console.log(`Taking screenshot of: ${url}`);
-    console.log(`Viewport: ${width}x${height}`);
+    console.log(`📐 Viewport: ${width}x${height} ${scale > 1 ? `(${scale}x retina)` : ''}`);
     console.log(`Delay: ${delay}ms`);
 
     // Navigate to the page
@@ -149,6 +152,7 @@ program
   .option('-o, --output <file>', 'Output file path (auto-generated if not specified)')
   .option('-f, --format <type>', 'Image format (png, jpeg)', 'png')
   .option('-q, --quality <number>', 'JPEG quality (1-100, only for JPEG)', '90')
+  .option('-s, --scale <number>', 'Scale factor for retina screenshots (1, 2, 3)', '1')
   .option('--headless', 'Run in headless mode (default)', true)
   .option('--no-headless', 'Run with visible browser (for debugging)')
   .option('--full-page', 'Take full page screenshot')
@@ -176,7 +180,8 @@ program
       if (options.output) {
         output = path.isAbsolute(options.output) ? options.output : path.join(outputDir, options.output);
       } else {
-        const filename = getSafeFilename(normalizedUrl);
+        const scale = parseInt(options.scale);
+        const filename = getSafeFilename(normalizedUrl, scale);
         output = path.join(outputDir, filename);
       }
 
@@ -194,6 +199,13 @@ program
         process.exit(1);
       }
 
+      // Validate scale factor
+      const scale = parseInt(options.scale);
+      if (![1, 2, 3].includes(scale)) {
+        console.error('Scale must be 1, 2, or 3');
+        process.exit(1);
+      }
+
       // Take screenshot
       await screenshotWebsite({
         url: normalizedUrl,
@@ -204,6 +216,7 @@ program
         headless: options.headless,
         quality,
         format: options.format,
+        scale,
       });
     } catch (error) {
       console.error(`Failed to take screenshot: ${error.message}`);
@@ -219,6 +232,7 @@ program.on('--help', () => {
   console.log('  $ webshot example.com -r mobile -d 2000');
   console.log('  $ webshot https://example.com -w 1920 -h 1080 -o cool-name.png');
   console.log('  $ webshot https://example.com -f jpeg -q 85');
+  console.log('  $ webshot https://example.com -s 2  # 2x retina');
   console.log('  $ webshot https://example.com --no-headless');
   console.log('');
 });
