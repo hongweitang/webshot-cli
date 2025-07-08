@@ -16,8 +16,8 @@ if (!fs.existsSync(outputDir)) {
 }
 
 const aspectRatios = {
-  '16:9': { width: 1920, height: 1080 },
   '16:10': { width: 1920, height: 1200 },
+  '16:9': { width: 1920, height: 1080 },
   '4:3': { width: 1440, height: 1080 },
   '1:1': { width: 1080, height: 1080 },
   '21:9': { width: 2560, height: 1080 },
@@ -89,9 +89,9 @@ async function screenshotWebsite({ url, width, height, delay, output, headless, 
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     );
 
-    console.log(`📸 Taking screenshot of: ${url}`);
-    console.log(`📐 Viewport: ${width}x${height}`);
-    console.log(`⏱️  Delay: ${delay}ms`);
+    console.log(`Taking screenshot of: ${url}`);
+    console.log(`Viewport: ${width}x${height}`);
+    console.log(`Delay: ${delay}ms`);
 
     // Navigate to the page
     await page.goto(url, {
@@ -121,10 +121,10 @@ async function screenshotWebsite({ url, width, height, delay, output, headless, 
     const stats = fs.statSync(output);
     const fileSizeKB = (stats.size / 1024).toFixed(1);
 
-    console.log(`✅ Screenshot saved to: ${output}`);
-    console.log(`📊 File size: ${fileSizeKB} KB`);
+    console.log(`Screenshot saved to: ${output}`);
+    console.log(`File size: ${fileSizeKB} KB`);
   } catch (error) {
-    console.error(`❌ Error taking screenshot: ${error.message}`);
+    console.error(`Error taking screenshot: ${error.message}`);
     throw error;
   } finally {
     await browser.close();
@@ -133,7 +133,7 @@ async function screenshotWebsite({ url, width, height, delay, output, headless, 
 
 // Error handling for unhandled rejections
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);
 });
 
@@ -164,7 +164,7 @@ program
       if (!width || !height) {
         const preset = aspectRatios[options.ratio];
         if (!preset) {
-          console.error(`❌ Invalid ratio. Available: ${Object.keys(aspectRatios).join(', ')}`);
+          console.error(`Invalid ratio. Available: ${Object.keys(aspectRatios).join(', ')}`);
           process.exit(1);
         }
         width = preset.width;
@@ -183,14 +183,14 @@ program
       // Validate format
       const validFormats = ['png', 'jpeg'];
       if (!validFormats.includes(options.format)) {
-        console.error(`❌ Invalid format. Use: ${validFormats.join(', ')}`);
+        console.error(`Invalid format. Use: ${validFormats.join(', ')}`);
         process.exit(1);
       }
 
       // Validate quality for JPEG
       const quality = parseInt(options.quality);
       if (options.format === 'jpeg' && (quality < 1 || quality > 100)) {
-        console.error('❌ JPEG quality must be between 1-100');
+        console.error('JPEG quality must be between 1-100');
         process.exit(1);
       }
 
@@ -206,18 +206,18 @@ program
         format: options.format,
       });
     } catch (error) {
-      console.error(`❌ Failed to take screenshot: ${error.message}`);
+      console.error(`Failed to take screenshot: ${error.message}`);
       process.exit(1);
     }
   });
 
 // Add help examples
 program.on('--help', () => {
-  console.log('');
+  console.log(''); // Add a newline for better readability
   console.log('Examples:');
   console.log('  $ webshot https://example.com');
   console.log('  $ webshot example.com -r mobile -d 2000');
-  console.log('  $ webshot https://example.com -w 1920 -h 1080 -o custom-name.png');
+  console.log('  $ webshot https://example.com -w 1920 -h 1080 -o cool-name.png');
   console.log('  $ webshot https://example.com -f jpeg -q 85');
   console.log('  $ webshot https://example.com --no-headless');
   console.log('');
