@@ -36,22 +36,27 @@ pnpm link -g
 
 ```bash
 # Basic screenshot
-./webshot https://example.com
+webshot https://example.com
 
 # Mobile viewport
-./webshot example.com -r mobile
+webshot example.com -r mobile
 
 # Custom size with delay
-./webshot https://example.com -w 1920 -h 1080 -d 5000
+webshot https://example.com -w 1920 -h 1080 -d 5000
 
 # JPEG format with quality
-./webshot https://example.com -f jpeg -q 85
+webshot https://example.com -f jpeg -q 85
 
 # Custom output filename
-./webshot https://example.com -o my-screenshot.png
+webshot https://example.com -o my-screenshot.png
 ```
 
-## Options
+## Options & Help
+
+```bash
+# Lists all options in the terminal
+webshot --help
+```
 
 | Option          | Description                  | Default           |
 | --------------- | ---------------------------- | ----------------- |
@@ -80,6 +85,8 @@ pnpm link -g
 Screenshots are saved to `~/Desktop/Website_Screenshots/` with auto-generated filenames like:
 
 - `example.com_2025-07-07-16-24-30.png`
+  💡
+  _Note: If you want to change the source directory, change the default name in the script file and it should be good to go. Will update this for future releases._
 
 ## Requirements
 
