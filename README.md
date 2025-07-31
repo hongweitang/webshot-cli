@@ -41,6 +41,9 @@ webshot https://example.com
 # Mobile viewport
 webshot example.com -r mobile
 
+# Retina scale 2x (1 by default)
+webshot https://example.com -s 2
+
 # Custom size with delay
 webshot https://example.com -w 1920 -h 1080 -d 5000
 
@@ -58,16 +61,17 @@ webshot https://example.com -o my-screenshot.png
 webshot --help
 ```
 
-| Option          | Description                  | Default           |
-| --------------- | ---------------------------- | ----------------- |
-| `-w, --width`   | Viewport width in pixels     | From ratio preset |
-| `-h, --height`  | Viewport height in pixels    | From ratio preset |
-| `-r, --ratio`   | Aspect ratio preset          | `16:10`           |
-| `-d, --delay`   | Delay before screenshot (ms) | `3000`            |
-| `-o, --output`  | Output filename              | Auto-generated    |
-| `-f, --format`  | Image format (png, jpeg)     | `png`             |
-| `-q, --quality` | JPEG quality (1-100)         | `90`              |
-| `--no-headless` | Show browser window          | `false`           |
+| Option          | Description                                   | Default           |
+| --------------- | --------------------------------------------- | ----------------- |
+| `-w, --width`   | Viewport width in pixels                      | From ratio preset |
+| `-h, --height`  | Viewport height in pixels                     | From ratio preset |
+| `-r, --ratio`   | Aspect ratio preset                           | `16:10`           |
+| `-d, --delay`   | Delay before screenshot (ms)                  | `3000`            |
+| `-o, --output`  | Output filename                               | Auto-generated    |
+| `-f, --format`  | Image format (png, jpeg)                      | `png`             |
+| `-q, --quality` | JPEG quality (1-100)                          | `90`              |
+| `--no-headless` | Show browser window                           | `false`           |
+| `-s, --scale`   | Scale factor for retina screenshots (1, 2, 3) | `1`               |
 
 ## Aspect Ratio Presets
 
