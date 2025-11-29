@@ -16,7 +16,7 @@ if (!fs.existsSync(outputDir)) {
 }
 
 const aspectRatios = {
-  '16:10': { width: 1920, height: 1200 }, // default
+  '16:10': { width: 1280, height: 800 }, // new default
   '16:9': { width: 1920, height: 1080 },
   '4:3': { width: 1440, height: 1080 },
   '1:1': { width: 1080, height: 1080 },
@@ -24,6 +24,7 @@ const aspectRatios = {
   mobile: { width: 375, height: 667 },
   tablet: { width: 768, height: 1024 },
   desktop: { width: 1920, height: 1080 },
+  xl: { width: 1920, height: 1200 },
 };
 
 /**
@@ -152,7 +153,7 @@ program
   .option('-o, --output <file>', 'Output file path (auto-generated if not specified)')
   .option('-f, --format <type>', 'Image format (png, jpeg)', 'png')
   .option('-q, --quality <number>', 'JPEG quality (1-100, only for JPEG)', '90')
-  .option('-s, --scale <number>', 'Scale factor for retina screenshots (1, 2, 3)', '1')
+  .option('-s, --scale <number>', 'Scale factor for retina screenshots (1, 2, 3)', '2')
   .option('--headless', 'Run in headless mode (default)', true)
   .option('--no-headless', 'Run with visible browser (for debugging)')
   .option('--full-page', 'Take full page screenshot')
